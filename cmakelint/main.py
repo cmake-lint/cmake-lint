@@ -479,15 +479,24 @@ def _ProcessFile(filename):
         return
     global _package_state
     _package_state = _CMakePackageState()
+
+    allWhitespace = True
+
     for l in open(filename).readlines():
+        allWhitespace = allWhitespace and l.isspace()
         l = l.rstrip('\n')
         if l.endswith('\r'):
             have_cr = True
             l = l.rstrip('\r')
         lines.append(l)
         CheckLintPragma(filename, len(lines) - 1, l)
+
+    if allWhitespace or len(lines) == 1:
+        # File was empty, or only contained whitespace
+        Error(filename, 0, 'empty file', 'File must contain cmake commands')
+
     lines.append('# Lines end here')
-    # Check file name after reading lines incase of a # lint_cmake: pragma
+    # Check file name after reading lines in case of a # lint_cmake: pragma
     CheckFileName(filename, Error)
     if have_cr and os.linesep != '\r\n':
         Error(filename, 0, 'whitespace/newline', 'Unexpected carriage return found; '
