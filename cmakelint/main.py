@@ -589,10 +589,11 @@ def ParseArgs(argv):
     except ValueError as ex:
         PrintUsage(str(ex))
 
-    if not filenames and not os.path.isfile(_DEFAULT_FILENAME):
-        PrintUsage('No files were specified!')
-    elif os.path.isfile(_DEFAULT_FILENAME):
-        filenames = [_DEFAULT_FILENAME]
+    if not filenames:
+        if os.path.isfile(_DEFAULT_FILENAME):
+            filenames = [_DEFAULT_FILENAME]
+        else:
+            PrintUsage('No files were specified!')
     return filenames
 
 def main():

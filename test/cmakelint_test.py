@@ -17,6 +17,8 @@ import os
 import sys
 import unittest
 
+import mock
+
 import cmakelint.__version__
 import cmakelint.main
 
@@ -384,6 +386,12 @@ class CMakeLintTest(CMakeLintTestBase):
             cmakelint.main.ParseArgs(['--config=None', 'foo.cmake'])
             self.assertEqual(None, cmakelint.main._lint_state.config)
             cmakelint.main.ParseArgs(['foo.cmake'])
+            self.assertEqual(os.path.expanduser('~') + os.path.sep +
+                             '.cmakelintrc', cmakelint.main._lint_state.config)
+            config = {'return_value': True}
+            patcher = mock.patch('os.path.isfile', **config)
+            patcher.start()
+            self.assertEqual(['CMakeLists.txt'], cmakelint.main.ParseArgs([]))
             self.assertEqual(os.path.expanduser('~')+os.path.sep +
                              '.cmakelintrc', cmakelint.main._lint_state.config)
 

@@ -131,7 +131,7 @@ class RegressionTests(TemporaryFolderClassSetup, unittest.TestCase):
         self.checkAllInFolder('samples/opencv', 1)
 
     def test_llvm_samples(self):
-        self.checkAllInFolder('samples/llvm', 1)
+        self.checkAllInFolder('samples/llvm', 2)
 
 
 class SimpleCMakeListsTxt(TemporaryFolderClassSetup, unittest.TestCase):
