@@ -1,5 +1,10 @@
 # CMakeLint
 
+[![Build Status](https://travis-ci.org/cmake-lint/cmake-lint.svg?branch=master)](https://travis-ci.org/cmake-lint/cmake-lint)
+![PyPI](https://img.shields.io/pypi/v/cmakelint.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dd/cmakelint.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/cmakelint.svg)
+
 cmakelint parses CMake files and reports style issues.
 
 cmakelint requires Python.
