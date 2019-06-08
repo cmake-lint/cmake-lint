@@ -354,7 +354,7 @@ class CMakeLintTest(CMakeLintTestBase):
             cmakelint.main.ParseArgs(['--config=None', 'foo.cmake'])
             self.assertEqual(None, cmakelint.main._lint_state.config)
             cmakelint.main.ParseArgs(['foo.cmake'])
-            self.assertEqual(os.environ['HOME']+os.path.sep+'.cmakelintrc', cmakelint.main._lint_state.config)
+            self.assertEqual(os.path.expanduser('~')+os.path.sep+'.cmakelintrc', cmakelint.main._lint_state.config)
 
         finally:
             cmakelint.main._USAGE = old_usage

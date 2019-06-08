@@ -1,11 +1,24 @@
 language: python
+
 python:
-  - "2.6"
-  - "2.7"
+  - "3.6"
+  - "3.5"
+  - "3.4"
   - "3.2"
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+  - "2.7"
+  - "2.6"
+
+install:
+  - pip install --upgrade pip
+  - pip install --upgrade setuptools
+  - pip install -e .[dev]
+  - pip install tox-travis
+
+  # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 # install:
 # command to run tests, e.g. python setup.py test
-script: nosetests
+script:
+  - tox
+
 notifications:
   email: false

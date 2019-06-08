@@ -1,10 +1,16 @@
+# CMakeLint
+
 cmakelint parses CMake files and reports style issues.
 
 cmakelint requires Python.
 
 ## Installation
 
-sudo pip install cmakelint
+To install cpplint from PyPI, run:
+
+.. code-block:: bash
+
+    $ pip install cmakelint
 
 ## Usage
 
@@ -52,42 +58,3 @@ The program should exit with the following status codes:
 * 0 if everything went fine
 * 1 if an error message was issued
 * 32 on usage error
-
-## Changes
-
-### 1.4
-
-- Add --quiet flag to suppress "Total Errors: 0"
-- Add --linelength=N flag to allow longer default lines (default remains 80)
-
-### 1.3.4
-
-- fix false positives in indented blocks
-
-### 1.3.3
-
-- fix crash on invalid `# lint_cmake: pragma` line
-- fix deprecation warning with Python 3.4
-- fix false positive warnings related to non-CMake quoted chunks (Issue #2)
-
-### 1.3.2
-
-- return error code 0, 1, 32 on error
-
-### 1.3.1
-
-- fix version number
-
-### 1.3
-
-- individual CMake files can control filters with `# lint_cmake: pragma` comment
-- improved `SetFilters` function to allow spaces around the commas
-- use `${XDG_CONFIG_HOME}` for the cmakelintrc file, with backwards compatible check for `~/.cmakelintrc`
-
-### 1.2.01
-
-- Published on pypi
-
-### 1.2
-
-- Moved to github

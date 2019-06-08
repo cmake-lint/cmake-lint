@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 from setuptools import setup
 
 import imp
@@ -27,8 +29,8 @@ setup(name='cmakelint',
       install_requires=[''],
       author="Richard Quirk",
       author_email="richard.quirk@gmail.com",
-      url="https://github.com/richq/cmake-lint",
-      download_url="https://github.com/richq/cmake-lint",
+      url="https://github.com/cmake-lint/cmake-lint",
+      download_url="https://github.com/cmake-lint/cmake-lint",
       keywords=["cmake", "lint"],
       classifiers=[
         "Topic :: Software Development",
@@ -37,4 +39,5 @@ setup(name='cmakelint',
         "License :: OSI Approved :: Apache Software License"],
       description="Static code checker for CMake files",
       long_description="""cmakelint parses CMake files and reports style issues.""",
-      license="Apache 2.0")
+      license="Apache 2.0"
+)
