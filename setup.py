@@ -17,6 +17,9 @@ def get_version():
             ver_file.close()
 
 
+with open('requirements-test.txt') as f:
+    required = f.read().splitlines()
+
 setup(name='cmakelint',
       version=get_version(),
       packages=['cmakelint'],
@@ -27,6 +30,7 @@ setup(name='cmakelint',
           ]
       },
       install_requires=[''],
+      tests_require=required,
       author="Richard Quirk",
       author_email="richard.quirk@gmail.com",
       url="https://github.com/cmake-lint/cmake-lint",
