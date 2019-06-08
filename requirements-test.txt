@@ -1,5 +1,10 @@
-flake8>=3.7.7
-radon>=2.4.0
-pylint>=1.8.4
-tox>=3.0.0
-pytest>=4.6
+pyflakes~=1.4.0
+radon==1.4.0
+pylint~=1.6
+tox
+pytest
+pytest-cov
+pytest-runner
+coala; python_version > '3'
+coala-bears; python_version > '3'
+mypy; python_version > '3'

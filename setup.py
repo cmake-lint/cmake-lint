@@ -1,15 +1,17 @@
 #! /usr/bin/env python
 
-from setuptools import setup
-
 import imp
+
+from setuptools import setup
 
 
 def get_version():
     ver_file = None
     try:
-        ver_file, pathname, description = imp.find_module('__version__', ['cmakelint'])
-        vermod = imp.load_module('__version__', ver_file, pathname, description)
+        ver_file, pathname, description = imp.find_module(
+            '__version__', ['cmakelint'])
+        vermod = imp.load_module(
+            '__version__', ver_file, pathname, description)
         version = vermod.VERSION
         return version
     finally:
@@ -44,4 +46,4 @@ setup(name='cmakelint',
       description="Static code checker for CMake files",
       long_description="""cmakelint parses CMake files and reports style issues.""",
       license="Apache 2.0"
-)
+      )

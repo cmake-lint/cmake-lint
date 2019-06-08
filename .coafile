@@ -1,0 +1,48 @@
+[all]
+# coafile used for coala, wraps many other linters as 'coala-bears'
+# sections inherit properties when named [parent.child]
+
+enabled = True
+overridable = 2
+ignore =
+  .tox/**, .eggs/**, build/**, dist/**
+  .git/**, **/*~, **/.\#*, **/*.orig
+  .env, .venv, env/**, venv/**, ENV/*, env.bak/**, venv.bak/**
+
+[all.Formatting]
+bears = LineLengthBear,SpaceConsistencyBear
+files = **/*.py
+max_line_length = 140
+max_lines_per_file = 512
+use_spaces = True
+
+[all.main]
+language = python
+
+[all.main.Lint]
+bears =
+  PEP8Bear,
+  PyDocStyleBear,
+  PyFlakesBear,
+  PyLintBear,
+  BanditBear,
+  PyImportSortBear,
+  RadonBear,
+  VultureBear,
+  # CPDBear, requires PMD
+  MypyBear, # struggles with missing imports :-(
+  YapfBear
+
+pydocstyle_ignore = D100, D101, D102, D103, D104, D105, D203, D213
+pylint_disable = C0111, R0903
+
+[all.test]
+files = test/**/*.py, setup.py
+
+[all.test.Lint]
+bears =
+  PEP8Bear,
+  PyFlakesBear,
+  PyImportSortBear,
+  RadonBear
+
