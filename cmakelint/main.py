@@ -153,7 +153,7 @@ class _CMakePackageState(object):
 
     def _GetExpected(self, filename):
         package = os.path.basename(filename)
-        package = re.sub('^Find(.*)\.cmake', lambda m: m.group(1), package)
+        package = re.sub(r'^Find(.*)\.cmake', lambda m: m.group(1), package)
         return package.upper()
 
     def Done(self, filename, errors):
@@ -394,7 +394,7 @@ def CheckStyle(filename, linenumber, clean_lines, errors):
     CheckRepeatLogic(filename, linenumber, clean_lines, errors)
 
 def CheckFileName(filename, errors):
-    name_match = re.match('Find(.*)\.cmake', os.path.basename(filename))
+    name_match = re.match(r'Find(.*)\.cmake', os.path.basename(filename))
     if name_match:
         package = name_match.group(1)
         if not package.isupper():
