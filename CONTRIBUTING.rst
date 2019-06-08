@@ -43,6 +43,7 @@ To release a new version:
 .. code-block:: bash
 
     # prepare files for release
+    git checkout develop
     vi cmakelint/__version__py # increment the version
     vi CHANGELOG.md # log changes
     git commit -m "Releasing x.y.z"
@@ -52,8 +53,9 @@ To release a new version:
     twine upload --repository testpypi dist/*
     # ... Check website and downloads from https://test.pypi.org/project/cmakelint/
     # Actual release
+    git checkout master
+    git merge develop
     python3 setup.py sdist bdist_wheel
     twine upload dist/*
     git tag x.y.z
-    git push
-    git push --tags
+    git push origin master develop --tags
