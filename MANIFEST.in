@@ -1,2 +1,2 @@
-include LICENSE README.md
+include LICENSE README.md requirements-test.txt
 include test/cmakelint_test.py
