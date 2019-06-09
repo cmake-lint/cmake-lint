@@ -1,2 +1,5 @@
 include LICENSE README.md requirements-test.txt
 include test/cmakelint_test.py
+
+# all samples for clitest
+graft samples

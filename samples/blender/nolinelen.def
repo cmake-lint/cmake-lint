@@ -1,0 +1,17 @@
+--filter=-linelength,-readability/mixedcase src/CMakeLists.txt
+1
+12
+src/CMakeLists.txt:234: Mismatching spaces inside () after command [whitespace/mismatch]
+src/CMakeLists.txt:494: Do not use mixed case commands [readability/wonkycase]
+src/CMakeLists.txt:525: Mismatching spaces inside () after command [whitespace/mismatch]
+src/CMakeLists.txt:537: Mismatching spaces inside () after command [whitespace/mismatch]
+src/CMakeLists.txt:571: Weird indentation; use 2 spaces [whitespace/indent]
+src/CMakeLists.txt:572: Weird indentation; use 2 spaces [whitespace/indent]
+src/CMakeLists.txt:669: Weird indentation; use 2 spaces [whitespace/indent]
+src/CMakeLists.txt:740: Extra spaces between 'if' and its () [whitespace/extra]
+src/CMakeLists.txt:815: Extra spaces between 'if' and its () [whitespace/extra]
+src/CMakeLists.txt:1302: Weird indentation; use 2 spaces [whitespace/indent]
+src/CMakeLists.txt:1303: Weird indentation; use 2 spaces [whitespace/indent]
+
+Total Errors: 11
+
