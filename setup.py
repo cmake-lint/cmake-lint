@@ -44,6 +44,7 @@ setup(name='cmakelint',
         "Programming Language :: Python",
         "License :: OSI Approved :: Apache Software License"],
       description="Static code checker for CMake files",
-      long_description="""cmakelint parses CMake files and reports style issues.""",
+      long_description=open('README.md').read(),
+      long_description_content_type="text/markdown",
       license="Apache 2.0"
       )

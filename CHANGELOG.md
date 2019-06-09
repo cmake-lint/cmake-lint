@@ -1,5 +1,10 @@
 # Changes
 
+## 1.4.1
+
+- Add missing error package/stdargs category
+- NOBUG: code linted
+
 ## 1.4
 
 - Add --quiet flag to suppress "Total Errors: 0"
