@@ -87,6 +87,7 @@ _ERROR_CATEGORIES = """\
         whitespace/newline
         whitespace/tabs
 """
+_DEFAULT_FILENAME = 'CMakeLists.txt'
 
 def DefaultRC():
     """
@@ -589,7 +590,10 @@ def ParseArgs(argv):
         PrintUsage(str(ex))
 
     if not filenames:
-        PrintUsage('No files were specified!')
+        if os.path.isfile(_DEFAULT_FILENAME):
+            filenames = [_DEFAULT_FILENAME]
+        else:
+            PrintUsage('No files were specified!')
     return filenames
 
 def main():
