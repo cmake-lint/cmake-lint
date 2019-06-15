@@ -1,5 +1,16 @@
 include LICENSE README.md requirements-test.txt
-include test/cmakelint_test.py
+recursive-include test *
 
 # all samples for clitest
 graft samples
+
+include tox.ini
+
+global-exclude .tox
+global-exclude *~
+global-exclude __pycache__
+global-exclude .coverage
+global-exclude *.py[co]
+global-exclude *.db
+global-exclude .git*
+global-exclude *.orig
