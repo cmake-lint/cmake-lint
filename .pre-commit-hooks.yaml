@@ -1,0 +1,6 @@
+-   id: cmakelint
+    name: CMake Lint
+    description: This hook lints CMake files for style issues.
+    entry: cmakelint
+    language: python
+    types: [cmake]
