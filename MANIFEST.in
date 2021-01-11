@@ -1,4 +1,9 @@
-include LICENSE README.md requirements-test.txt
+# MANIFEST.in file required to deliver test files with source tar
+include *.py
+include LICENSE
+include README.md
+include test-requirements
+include dev-requirements
 recursive-include test *
 
 # all samples for clitest

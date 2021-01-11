@@ -21,7 +21,7 @@ It may be okay to run and test python against locally installed libraries, but i
 
 1. (Optional) Setup a local virtual environment with all necessary tools and libraries
      mkvirtualenv cmakelint
-     pip install -r requirements-test.txt
+     pip install .[dev]
       
 You can setup your local environment for developing patches for cmakelint like this:
 
