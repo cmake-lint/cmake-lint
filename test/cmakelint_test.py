@@ -390,11 +390,13 @@ class CMakeLintTest(CMakeLintTestBase):
                              '.cmakelintrc', cmakelint.main._lint_state.config)
             config = {'return_value': True}
             patcher = mock.patch('os.path.isfile', **config)
-            patcher.start()
-            self.assertEqual(['CMakeLists.txt'], cmakelint.main.ParseArgs([]))
-            self.assertEqual(os.path.expanduser('~')+os.path.sep +
-                             '.cmakelintrc', cmakelint.main._lint_state.config)
-
+            try:
+                patcher.start()
+                self.assertEqual(['CMakeLists.txt'], cmakelint.main.ParseArgs([]))
+                self.assertEqual(os.path.expanduser('~')+os.path.sep +
+                                 '.cmakelintrc', cmakelint.main._lint_state.config)
+            finally:
+                patcher.stop()
         finally:
             cmakelint.main._USAGE = old_usage
             cmakelint.main._ERROR_CATEGORIES = old_cats
