@@ -18,10 +18,12 @@ def get_version():
         if ver_file is not None:
             ver_file.close()
 
-# some pip versions bark on comments (e.g. on travis)
+
 def read_without_comments(filename):
+    """some pip versions bark on comments (e.g. on travis)"""
     with open(filename) as f:
         return [line for line in f.read().splitlines() if not len(line) == 0 and not line.startswith('#')]
+
 
 test_required = read_without_comments('test-requirements')
 

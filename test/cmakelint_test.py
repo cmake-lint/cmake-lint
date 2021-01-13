@@ -17,10 +17,9 @@ import os
 import sys
 import unittest
 
-import mock
-
 import cmakelint.__version__
 import cmakelint.main
+import mock
 
 
 # stderr suppression from https://stackoverflow.com/a/1810086
@@ -392,7 +391,9 @@ class CMakeLintTest(CMakeLintTestBase):
             patcher = mock.patch('os.path.isfile', **config)
             try:
                 patcher.start()
-                self.assertEqual(['CMakeLists.txt'], cmakelint.main.ParseArgs([]))
+                self.assertEqual(
+                    ['CMakeLists.txt'],
+                    cmakelint.main.ParseArgs([]))
                 self.assertEqual(os.path.expanduser('~')+os.path.sep +
                                  '.cmakelintrc', cmakelint.main._lint_state.config)
             finally:
