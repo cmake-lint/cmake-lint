@@ -16,6 +16,8 @@ For many tasks, it is okay to just develop using a single installed python versi
 
       pyenv install 2.7.16
       pyenv install 3.6.8
+      # ...
+      pyenv local 2.7.16 3.6.8 ...
 
 It may be okay to run and test python against locally installed libraries, but if you need to have a consistent build, it is recommended to manage your environment using virtualenv: [virtualenv](https://virtualenv.pypa.io/en/latest/ ), [virtualenv](https://pypi.org/project/virtualenvwrapper/ )
 
