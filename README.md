@@ -56,6 +56,14 @@ same effect:
     cmakelint.py CMakeLists.txt
     cmakelint.py --filter=-whitespace/indent CMakeLists.txt
 
+cmakelint can also be run with [pre-commit](https://pre-commit.com). Add the following configuration block to your `.pre-commit-config.yaml`:
+
+``` yaml
+  - repo: https://github.com/cmake-lint/cmake-lint
+    hooks:
+      - id: cmakelint
+```
+
 # Output status codes
 
 The program should exit with the following status codes:
