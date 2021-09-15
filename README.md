@@ -11,7 +11,7 @@ cmakelint requires Python.
 
 ## Installation
 
-To install cpplint from PyPI, run:
+To install cmakelint from PyPI, run:
 
 .. code-block:: bash
 
