@@ -47,10 +47,10 @@ Syntax: cmakelint.py [--version] [--config=file] [--filter=-x,+y] [--spaces=N]
 
     config=file
       Use the given file for configuration. By default the file
-      ~/.config/cmakelintrc, $XDG_CONFIG_DIR/cmakelintrc or ~/.cmakelintrc is
-      used if it exists.  Use the value "None" to use no configuration file
-      (./None for a file called literally None) Only the option "filter=" is
-      currently supported in this file.
+      $PWD/.cmakelintrc, ~/.config/cmakelintrc, $XDG_CONFIG_DIR/cmakelintrc or
+      ~/.cmakelintrc is used if it exists. Use the value "None" to use no
+      configuration file (./None for a file called literally None) Only the
+      option "filter=" is currently supported in this file.
 
     quiet makes output quiet unless errors occurs
       Mainly used by automation tools when parsing huge amount of files.
@@ -91,8 +91,11 @@ _DEFAULT_FILENAME = 'CMakeLists.txt'
 
 def DefaultRC():
     """
-    Check XDG_CONFIG_DIR before ~/.cmakelintrc
+    Check current working directory and XDG_CONFIG_DIR before ~/.cmakelintrc
     """
+    cwdfile = os.path.join(os.getcwd(), '.cmakelintrc')
+    if os.path.exists(cwdfile):
+        return cwdfile
     xdg = os.path.join(os.path.expanduser('~'), '.config')
     if 'XDG_CONFIG_DIR' in os.environ:
         xdg = os.environ['XDG_CONFIG_DIR']
