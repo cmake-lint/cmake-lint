@@ -25,9 +25,10 @@ To install cmakelint from PyPI, run:
 
     config=file
       Use the given file for configuration. By default the file
-      $HOME/.cmakelintrc is used if it exists.  Use the value "None" to use no
-      configuration file (./None for a file called literally None)
-      Only the option "filter=" is currently supported in this file.
+      $PWD/.cmakelintrc, ~/.config/cmakelintrc, $XDG_CONFIG_DIR/cmakelintrc or
+      ~/.cmakelintrc is used if it exists. Use the value "None" to use no
+      configuration file (./None for a file called literally None) Only the
+      option "filter=" is currently supported in this file.
 
 Run the `--filter=` option with no filter to see available options. Currently
 these are:
