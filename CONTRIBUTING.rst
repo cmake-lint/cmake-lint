@@ -48,12 +48,12 @@ To release a new version:
     git checkout develop
     vi cmakelint/__version__py # increment the version
     vi CHANGELOG.md # log changes
-    git commit -m "Releasing x.y.z"
     git add cmakelint/__version__py CHANGELOG.md
+    git commit -m "Releasing x.y.z"
     # test-release (on env by mkvirtualenv -p /usr/bin/python3)
     pip install --upgrade setuptools wheel twine
-    python3 setup.py sdist bdist_wheel
     rm -rf dist
+    python3 setup.py sdist bdist_wheel
     twine upload --repository testpypi dist/*
     # ... Check website and downloads from https://test.pypi.org/project/cmakelint/
     # Actual release

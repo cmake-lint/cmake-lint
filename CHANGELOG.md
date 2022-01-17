@@ -1,5 +1,9 @@
 # Changes
 
+## 1.4.2
+
+- add ability to override settings in $PWD/.cmakelintrc, ideally placing it in the project root folder.
+
 ## 1.4.1
 
 - Add missing error package/stdargs category
