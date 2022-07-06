@@ -254,6 +254,21 @@ class CMakeLintTest(CMakeLintTestBase):
                                   '  foo() \n'
                                   '  foo()\n'), '')
 
+    def testFilterForbiddenCommand(self):
+        self.doTestMultiLineLint(('# lint_cmake: +command=include_directories\n'
+                                  '    include_directories(test/dir)\n' ),
+                                  'Command include_directories should not be used!'
+                                  )
+        self.doTestMultiLineLint(('# lint_cmake: +command=find_module\n'
+                                  '    find_module(test/dir)\n' ),
+                                  'Command find_module should not be used!'
+                                  )
+        self.doTestMultiLineLint(('# lint_cmake: +command=foo2\n'
+                                  '    foo(test/dir)\n'
+                                  '    foo2(test/dir)\n' ),
+                                  'Command foo2 should not be used!'
+                                  )
+
     def testBadPragma(self):
         self.doTestMultiLineLint(('# lint_cmake: I am badly formed\n'
                                   'if(TRUE)\n'
