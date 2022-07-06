@@ -442,6 +442,8 @@ def CheckFindPackage(filename, linenumber, clean_lines, errors):
             _package_state.HaveUsedStandardArgs(filename, linenumber, var_name, errors)
 
 def CheckForbiddenCommand(filename, linenumber, clean_lines, errors):
+    """Checks if a forbidden command has been used.
+    """
     line = clean_lines.lines[linenumber]
     if not ContainsCommand(line): # nothing to see here
         return
