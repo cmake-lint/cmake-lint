@@ -65,6 +65,7 @@ cmakelint can also be run with [pre-commit](https://pre-commit.com). Add the fol
   - repo: https://github.com/cmake-lint/cmake-lint
     hooks:
       - id: cmakelint
+      - id: cmakelint-diff # for running lint check only against the changes
 ```
 
 # Output status codes
