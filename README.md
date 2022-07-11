@@ -19,7 +19,7 @@ To install cmakelint from PyPI, run:
 
 ## Usage
 
-    Syntax: cmakelint [--config=file] [--filter=-x,+y] <file> [file] ...
+    Syntax: cmakelint [--diff] [--config=file] [--filter=-x,+y] <file> [file] ...
     filter=-x,+y,...
       Specify a comma separated list of filters to apply
 
@@ -29,7 +29,13 @@ To install cmakelint from PyPI, run:
       ~/.cmakelintrc is used if it exists. Use the value "None" to use no
       configuration file (./None for a file called literally None) Only the
       option "filter=" is currently supported in this file.
-
+      
+    diff
+      if this flag is set, cmakelint reads input from stdin and interprets input as unified diff with 0 lines of context.
+      e.g. from git diff -U0 
+      Examples:
+        git diff -U0 -- CMakeLists.txt | cmakelint --linelength=120 --diff
+      
 Run the `--filter=` option with no filter to see available options. Currently
 these are:
 
