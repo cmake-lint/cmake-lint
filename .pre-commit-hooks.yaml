@@ -4,3 +4,13 @@
     entry: cmakelint
     language: python
     types: [cmake]
+
+-   id: cmakelint-diff
+    name: CMake Lint for git diff
+    description: This hook lints CMake file diffs for style issues
+    entry: ./cmakelint-diff.py
+    language: python
+    types: [cmake]
+    verbose: true
+    args: [--filter=+readability/mixedcase]
+
