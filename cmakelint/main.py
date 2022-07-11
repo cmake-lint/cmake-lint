@@ -265,7 +265,7 @@ class CleansedDiffLines(CleansedLines):
     def __init__(self, lines, starting):
         super(CleansedDiffLines, self).__init__(lines)
         self.starting = starting
-        _lines = ["" for i in range(0, starting+1)]
+        _lines = ["" for i in range(0, starting)]
         self.raw_lines = list(_lines)
         self.raw_lines.extend(lines) # overrides what the super const does.
         _lines.extend(self.lines)
@@ -478,7 +478,7 @@ def CheckForbiddenCommand(filename, linenumber, clean_lines, errors):
                 errors( 
                     filename,
                     linenumber,
-                    f,
+                    f[1:],
                     "Command {cmd} should not be used!".format(cmd=command)
                 )
 

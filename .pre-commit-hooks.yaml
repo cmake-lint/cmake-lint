@@ -9,8 +9,8 @@
     name: CMake Lint for git diff
     description: This hook lints CMake file diffs for style issues
     entry: ./cmakelint-diff.py
+    pass_filenames: true
+    additional_dependencies: [cmakelint]
     language: python
     types: [cmake]
-    verbose: true
-    args: [--filter=+readability/mixedcase]
 
