@@ -17,8 +17,6 @@ import re
 import os
 import getopt
 
-
-from pkg_resources import to_filename
 import cmakelint.__version__
 
 if sys.version_info < (3,):
