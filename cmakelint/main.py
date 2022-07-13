@@ -448,14 +448,15 @@ def CheckForbiddenCommand(filename, linenumber, clean_lines, errors):
     if not ContainsCommand(line): # nothing to see here
         return
     command = GetCommand(line) # get command from line
-    for f in _lint_state.filters: # and for each...
-        if "command=" in f: # ... command filter
-            _f = f[1:].strip("command=").upper() # make sure both are uppercase for comparison
+    for f in _lint_state.filters: # and for each...#
+        match = re.findall(r"(?<=\+command=).*", f, flags=re.DOTALL|re.MULTILINE)
+        if len(match) > 0: # ... command filter
+            _f = match[0].upper() # make sure both are uppercase for comparison
             _command = command.upper()
             if _command == _f: # and compare if command is forbidden.
                 errors( 
                     filename,
-                    line,
+                    linenumber,
                     f[1:],
                     "Command {cmd} should not be used!".format(cmd=command)
                 )
