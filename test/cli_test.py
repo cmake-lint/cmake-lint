@@ -18,7 +18,6 @@ def RunShellCommand(cmd, cwd='.'):
     :param cmd: A string to execute.
     :param cwd: from which folder to run.
     """
-
     stdout_target = subprocess.PIPE
     stderr_target = subprocess.PIPE
 
@@ -100,8 +99,8 @@ class TemporaryFolderClassSetup(object):
                               ) for line in datalines[3:3 + stdoutLines]],
                               expectedErr=[line.decode('utf8').strip() for line in datalines[3 + stdoutLines:]])
 
-    def _runAndCheck(self, rel_cwd, args, expectedStatus, expectedOut, expectedErr):
-        cmd = BASE_CMD + args
+    def _runAndCheck(self, rel_cwd, args, expectedStatus, expectedOut, expectedErr, prepending_command=""):
+        cmd = prepending_command + BASE_CMD + args
         cwd = os.path.join(self._root, rel_cwd)
         # command to reproduce
         print("\ncd " + cwd + " && " + cmd + " 2> <filename>")
@@ -132,6 +131,21 @@ class RegressionTests(TemporaryFolderClassSetup, unittest.TestCase):
 
     def test_llvm_samples(self):
         self.checkAllInFolder('samples/llvm', 2)
+
+    def test_llvm_diff_sample(self):
+        out = self._runAndCheck(args="--diff", prepending_command="cat samples/diffs/llvm.diff | ", expectedStatus=1, 
+        expectedErr=[
+                    "Total Errors: 4", ""
+                    ],
+        expectedOut=[
+                    "samples/llvm/CMakeLists.txt:45: Do not use mixed case commands [readability/wonkycase]",
+                    "samples/llvm/CMakeLists.txt:57: Mismatching spaces inside () after command [whitespace/mismatch]",
+                    "samples/llvm/CMakeLists.txt:94: Mismatching spaces inside () after command [whitespace/mismatch]",
+                    "samples/llvm/CMakeLists.txt:94: Line ends in whitespace [whitespace/eol]",
+                    ""
+        ],
+        rel_cwd=".")
+        print(out)
 
 
 class SimpleCMakeListsTxt(TemporaryFolderClassSetup, unittest.TestCase):
