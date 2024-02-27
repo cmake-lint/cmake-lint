@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import imp
+import importlib
 
 from setuptools import setup
 
@@ -8,10 +8,7 @@ from setuptools import setup
 def get_version():
     ver_file = None
     try:
-        ver_file, pathname, description = imp.find_module(
-            '__version__', ['cmakelint'])
-        vermod = imp.load_module(
-            '__version__', ver_file, pathname, description)
+        vermod = importlib.import_module('cmakelint.__version__')
         version = vermod.VERSION
         return version
     finally:
