@@ -3,6 +3,5 @@
 # also change in tox.ini
 flake8>=4.0.1
 flake8-polyfill
-pylint<=1.6.0
+pylint>=2.11.0
 tox>=3.0.0
-pyflakes<=1.4.0
