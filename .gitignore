@@ -315,6 +315,8 @@ tags
 # Persistent undo
 [._]*.un~
 
+# ruff
+.ruff_cache
 
 
 *.pyc

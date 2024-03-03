@@ -5,3 +5,4 @@ flake8>=4.0.1
 flake8-polyfill
 pylint>=2.11.0
 tox>=3.0.0
+ruff>=0.3.0
