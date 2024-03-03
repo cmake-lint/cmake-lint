@@ -570,14 +570,14 @@ def ParseArgs(argv):
             try:
                 _lint_state.SetSpaces(val)
                 ignore_space = True
-            except:
+            except Exception:
                 PrintUsage('spaces expects an integer value')
         elif opt == '--quiet':
             _lint_state.quiet = True
         elif opt == '--linelength':
             try:
                 _lint_state.SetLineLength(val)
-            except:
+            except Exception:
                 PrintUsage('line length expects an integer value')
     try:
         if _lint_state.config:
