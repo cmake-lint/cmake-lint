@@ -58,10 +58,10 @@ class TemporaryFolderClassSetup(object):
             cls._root = tempfile.mkdtemp()
             shutil.copytree('samples', os.path.join(cls._root, 'samples'))
             cls.prepare_directory(cls._root)
-        except Exception as e:
+        except Exception:
             try:
                 cls.tearDownClass()
-            except Exception as e2:
+            except Exception:
                 pass
             raise
 
