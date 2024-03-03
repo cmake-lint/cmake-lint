@@ -468,7 +468,7 @@ def CheckLintPragma(filename, linenumber, line, errors=None):
         except ValueError as ex:
             if errors:
                 errors(filename, linenumber, 'syntax', str(ex))
-        except:
+        except Exception:
             print("Exception occurred while processing '{0}:{1}':"
                   .format(filename, linenumber))
 
