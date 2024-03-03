@@ -480,13 +480,13 @@ def _ProcessFile(filename):
         return
     global _package_state
     _package_state = _CMakePackageState()
-    for l in open(filename).readlines():
-        l = l.rstrip('\n')
-        if l.endswith('\r'):
+    for line in open(filename).readlines():
+        line = line.rstrip('\n')
+        if line.endswith('\r'):
             have_cr = True
-            l = l.rstrip('\r')
-        lines.append(l)
-        CheckLintPragma(filename, len(lines) - 1, l)
+            line = line.rstrip('\r')
+        lines.append(line)
+        CheckLintPragma(filename, len(lines) - 1, line)
     lines.append('# Lines end here')
     # Check file name after reading lines incase of a # lint_cmake: pragma
     CheckFileName(filename, Error)
