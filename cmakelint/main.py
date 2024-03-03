@@ -18,9 +18,6 @@ import os
 import getopt
 import cmakelint.__version__
 
-if sys.version_info < (3,):
-    # xrange slightly faster than range on python2
-    range = xrange
 
 _RE_COMMAND = re.compile(r'^\s*(\w+)(\s*)\(', re.VERBOSE)
 _RE_COMMAND_START_SPACES = re.compile(r'^\s*\w+\s*\((\s*)', re.VERBOSE)
