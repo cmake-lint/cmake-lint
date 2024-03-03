@@ -34,9 +34,7 @@ setup(name='cmakelint',
           ]
       },
       install_requires=[],
-      setup_requires=[
-          "pytest-runner"
-      ],
+      setup_requires=[],
       tests_require=test_required,
       # extras_require allow pip install .[dev]
       extras_require={
