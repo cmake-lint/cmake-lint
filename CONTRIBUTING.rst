@@ -34,7 +34,7 @@ You can setup your local environment for developing patches for cmakelint like t
 
     # run tests
     pytest
-    coala
+    ruff check .
     ./tox    # the above in all python environments
 
 Releasing
