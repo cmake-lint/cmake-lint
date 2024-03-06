@@ -34,6 +34,7 @@ Run the `--filter=` option with no filter to see available options. Currently
 these are:
 
     convention/filename
+    command
     linelength
     package/consistency
     readability/logic
@@ -50,6 +51,7 @@ these are:
 An example .cmakelintrc file would be as follows:
 
     filter=-whitespace/indent
+    filter=+command=foo
 
 With this file in your home directory, running these commands would have the
 same effect:
