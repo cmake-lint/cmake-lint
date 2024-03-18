@@ -36,6 +36,7 @@ these are:
     convention/filename
     linelength
     package/consistency
+    package/stdargs
     readability/logic
     readability/mixedcase
     readability/wonkycase
