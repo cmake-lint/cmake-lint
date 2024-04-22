@@ -27,7 +27,6 @@ test_required = read_without_comments('test-requirements')
 setup(name='cmakelint',
       version=get_version(),
       packages=['cmakelint'],
-      scripts=['bin/cmakelint'],
       entry_points={
           'console_scripts': [
               'cmakelint = cmakelint.main:main'
