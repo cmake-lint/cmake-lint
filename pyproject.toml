@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "cmakelint"
+version = "1.5.1a0"
+description = "Static code checker for CMake files"
+authors = ["Richard Quirk <richard.quirk@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/cmake-lint/cmake-lint"
+repository = "https://github.com/cmake-lint/cmake-lint"
+keywords = ["cmake", "lint"]
+classifiers = [
+    "Topic :: Software Development",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Programming Language :: Other",
+    "Programming Language :: Python",
+    "License :: OSI Approved :: Apache Software License"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+tox = "^3.0.0"
+ruff = "^0.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+

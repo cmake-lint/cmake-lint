@@ -1,5 +1,11 @@
 # Changes
 
+## 1.5.0
+
+- remove support for python < 3.8
+- add support for python 3.12
+- use ruff for linting
+
 ## 1.4.2
 
 - add ability to override settings in $PWD/.cmakelintrc, ideally placing it in the project root folder.
