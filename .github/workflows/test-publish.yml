@@ -35,5 +35,6 @@ jobs:
           git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
           poetry version -s | xargs -I{} git tag -m "test deploy version {}" "testpypi/{}"
           git push
+          poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry build
           poetry publish -r testpypi 
