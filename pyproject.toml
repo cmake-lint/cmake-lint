@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cmakelint"
-version = "1.5.0"
+version = "1.5.1a0"
 description = "Static code checker for CMake files"
 authors = ["Richard Quirk <richard.quirk@gmail.com>"]
 license = "Apache-2.0"
