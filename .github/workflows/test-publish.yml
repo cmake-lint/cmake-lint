@@ -36,4 +36,4 @@ jobs:
           poetry version -s | xargs -I{} git tag -m "test deploy version {}" "testpypi/{}"
           git push
           poetry build
-          poetry publish --build -r testpypi 
+          poetry publish -r testpypi 
