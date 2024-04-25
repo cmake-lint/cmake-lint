@@ -1,7 +1,6 @@
 # minimal requirements to run python setup.py test
 pytest>=8.0.0
 pytest-cov
-mock
 # freeze versions breaking python 2.7 on travis
 pyparsing<3
 zipp<=0.5.1
