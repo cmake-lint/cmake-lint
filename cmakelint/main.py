@@ -70,6 +70,7 @@ Syntax: cmakelint.py [--version] [--config=file] [--filter=-x,+y] [--spaces=N]
 """
 _ERROR_CATEGORIES = """\
         convention/filename
+        command
         linelength
         package/consistency
         package/stdargs
@@ -127,6 +128,10 @@ class _CMakeLintState(object):
             if f.startswith('-') or f.startswith('+'):
                 allowed = False
                 for c in self.allowed_categories:
+                    # for command filter. category needs to be followed by "="
+                    if len(f[1:]) > len(c)+1:
+                        if str(c+"=").startswith(f[1:len(c)+2]):
+                            allowed = True
                     if c.startswith(f[1:]):
                         allowed = True
                 if not allowed:
@@ -433,6 +438,26 @@ def CheckFindPackage(filename, linenumber, clean_lines, errors):
             var_name = GetCommandArgument(linenumber, clean_lines)
             _package_state.HaveUsedStandardArgs(filename, linenumber, var_name, errors)
 
+def CheckForbiddenCommand(filename, linenumber, clean_lines, errors):
+    """Checks if a forbidden command has been used.
+    """
+    line = clean_lines.lines[linenumber]
+    if not ContainsCommand(line): # nothing to see here
+        return
+    command = GetCommand(line) # get command from line
+    for f in _lint_state.filters: # and for each...#
+        match = re.findall(r"(?<=\+command=).*", f, flags=re.DOTALL|re.MULTILINE)
+        if len(match) > 0: # ... command filter
+            _f = match[0].upper() # make sure both are uppercase for comparison
+            _command = command.upper()
+            if _command == _f: # and compare if command is forbidden.
+                errors( 
+                    filename,
+                    linenumber,
+                    f[1:],
+                    "Command {cmd} should not be used!".format(cmd=command)
+                )
+
 def ProcessLine(filename, linenumber, clean_lines, errors):
     """
     Arguments:
@@ -445,6 +470,7 @@ def ProcessLine(filename, linenumber, clean_lines, errors):
     CheckLineLength(filename, linenumber, clean_lines, errors)
     CheckUpperLowerCase(filename, linenumber, clean_lines, errors)
     CheckStyle(filename, linenumber, clean_lines, errors)
+    CheckForbiddenCommand(filename, linenumber, clean_lines, errors)
     if IsFindPackage(filename):
         CheckFindPackage(filename, linenumber, clean_lines, errors)
 
