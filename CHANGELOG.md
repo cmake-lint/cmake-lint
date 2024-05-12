@@ -1,5 +1,10 @@
 # Changes
 
+## 1.4.3
+
+- support for python 3.12
+- use ruff for linking the codebase
+
 ## 1.4.2
 
 - add ability to override settings in $PWD/.cmakelintrc, ideally placing it in the project root folder.
