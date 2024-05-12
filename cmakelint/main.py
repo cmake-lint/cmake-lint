@@ -16,6 +16,7 @@ import sys
 import re
 import os
 import getopt
+
 import cmakelint.__version__
 
 
@@ -34,7 +35,7 @@ endwhile
 """.split()
 _USAGE = """
 Syntax: cmakelint.py [--version] [--config=file] [--filter=-x,+y] [--spaces=N]
-                     [--quiet] [--linelength=digits]
+                     [--quiet] [--linelength=digits] [--diff]
         <file> [file] ...
     filter=-x,+y,...
       Specify a comma separated list of filters to apply
@@ -64,12 +65,18 @@ Syntax: cmakelint.py [--version] [--config=file] [--filter=-x,+y] [--spaces=N]
 
       Examples:
         --linelength=120
+    diff
+      if this flag is set, cmakelint reads input from stdin and interprets input as unified diff with 0 lines of context.
+      e.g. from git diff -U0 
+      Examples:
+        git diff -U0 -- CMakeLists.txt | cmakelint --linelength=120 --diff
 
     version
       Show the version number and end
 """
 _ERROR_CATEGORIES = """\
         convention/filename
+        command
         linelength
         package/consistency
         package/stdargs
@@ -112,6 +119,7 @@ class _CMakeLintState(object):
         self.linelength = 80
         self.allowed_categories = _ERROR_CATEGORIES.split()
         self.quiet = False
+        self.diff = False
 
     def SetFilters(self, filters):
         if not filters:
@@ -127,6 +135,10 @@ class _CMakeLintState(object):
             if f.startswith('-') or f.startswith('+'):
                 allowed = False
                 for c in self.allowed_categories:
+                    # for command filter. category needs to be followed by "="
+                    if len(f[1:]) > len(c)+1:
+                        if str(c+"=").startswith(f[1:len(c)+2]):
+                            allowed = True
                     if c.startswith(f[1:]):
                         allowed = True
                 if not allowed:
@@ -243,6 +255,18 @@ class CleansedLines(object):
 
     def LineNumbers(self):
         return range(0, len(self.lines))
+
+class CleansedDiffLines(CleansedLines):
+    def __init__(self, lines, starting):
+        super(CleansedDiffLines, self).__init__(lines)
+        self.starting = starting
+        _lines = ["" for i in range(0, starting)]
+        self.raw_lines = list(_lines)
+        self.raw_lines.extend(lines) # overrides what the super const does.
+        _lines.extend(self.lines)
+        self.lines = _lines
+    def LineNumbers(self):
+        return range(self.starting, len(self.lines))
 
 def ShouldPrintError(category):
     should_print = True
@@ -433,6 +457,26 @@ def CheckFindPackage(filename, linenumber, clean_lines, errors):
             var_name = GetCommandArgument(linenumber, clean_lines)
             _package_state.HaveUsedStandardArgs(filename, linenumber, var_name, errors)
 
+def CheckForbiddenCommand(filename, linenumber, clean_lines, errors):
+    """Checks if a forbidden command has been used.
+    """
+    line = clean_lines.lines[linenumber]
+    if not ContainsCommand(line): # nothing to see here
+        return
+    command = GetCommand(line) # get command from line
+    for f in _lint_state.filters: # and for each...#
+        match = re.findall(r"(?<=\+command=).*", f, flags=re.DOTALL|re.MULTILINE)
+        if len(match) > 0: # ... command filter
+            _f = match[0].upper() # make sure both are uppercase for comparison
+            _command = command.upper()
+            if _command == _f: # and compare if command is forbidden.
+                errors( 
+                    filename,
+                    linenumber,
+                    f[1:],
+                    "Command {cmd} should not be used!".format(cmd=command)
+                )
+
 def ProcessLine(filename, linenumber, clean_lines, errors):
     """
     Arguments:
@@ -445,6 +489,7 @@ def ProcessLine(filename, linenumber, clean_lines, errors):
     CheckLineLength(filename, linenumber, clean_lines, errors)
     CheckUpperLowerCase(filename, linenumber, clean_lines, errors)
     CheckStyle(filename, linenumber, clean_lines, errors)
+    CheckForbiddenCommand(filename, linenumber, clean_lines, errors)
     if IsFindPackage(filename):
         CheckFindPackage(filename, linenumber, clean_lines, errors)
 
@@ -498,6 +543,56 @@ def _ProcessFile(filename):
         ProcessLine(filename, line, clean_lines, Error)
     _package_state.Done(filename, Error)
 
+def _ProcessDiff(data):
+    """
+    Parses a unified diff with 0! padding lines. 
+    """
+    global _package_state
+    _package_state = _CMakePackageState()
+    re_from_file = re.compile(r"(?<=[-]{3}...).*")
+    re_to_file = re.compile(r"(?<=[+]{3}...).*")
+    re_hunks = re.compile(r"[@]{2}[0-9,+ -]*[@]{2}.*?(?=[@]{2}[0-9,+ -]*[@]{2}|\Z)", flags=re.MULTILINE|re.DOTALL|re.I)
+    re_from_file_numbers = re.compile(r"(?<=[@]{2} -)[\d]+,{0,1}[\d]*(?= \+)")
+    re_to_file_numbers = re.compile(r"(?<=[+]{1})[\d]+,{0,1}[\d]*(?= [@]{2})")
+    re_hunk_add = re.compile(r"(?<=^[\+]{1})(?!\+).*", flags=re.MULTILINE)
+    re_hunk_remove = re.compile(r"(?<=^[-]{1})(?!-).*", flags=re.MULTILINE)
+    filename = re_from_file.findall(data) # assume the diff contains only one file!
+    if(len(filename) > 1):
+        raise NotImplementedError("No support for multifile diffs!")
+    if(len(data) == 0):
+        print("Empty diff")
+        return
+    try:
+        from_filename = filename[0]
+        to_filename = re_to_file.findall(data)[0]
+        if not IsValidFile(to_filename):
+            print('Ignoring file: ' + to_filename)
+            return
+    
+        for hunk in re_hunks.findall(data):
+            filenumbers = re_to_file_numbers.findall(hunk)[0] # "@@ ... +XX,YY @@"
+            start_add_line = int(filenumbers.split(",")[0])
+            #lines = ['# Lines start at 1']
+            lines = re_hunk_add.findall(hunk)
+            for i, l in enumerate(lines):
+                CheckLintPragma(to_filename, start_add_line+i, l)
+        
+            clean_lines = CleansedDiffLines(lines, start_add_line)
+            for line in clean_lines.LineNumbers():
+                ProcessLine(to_filename, line, clean_lines, Error)
+        
+        _package_state.Done(to_filename, Error)
+    except Exception as e:
+        raise ValueError("Diff cannot be parsed: {}".format(e))
+
+def ProcessDiff(data):
+    # Store and then restore the filters to prevent pragmas in the file from persisting.
+    original_filters = list(_lint_state.filters)
+    try:
+        return _ProcessDiff(data)
+    finally:
+        _lint_state.filters = original_filters
+
 def PrintVersion():
     sys.stderr.write("cmakelint %s\n" % cmakelint.__version__.VERSION)
     sys.exit(0)
@@ -547,7 +642,7 @@ def ParseArgs(argv):
     try:
         (opts, filenames) = getopt.getopt(argv, '',
                 ['help', 'filter=', 'config=', 'spaces=', 'linelength=',
-                 'quiet', 'version'])
+                 'quiet', 'version', 'diff'])
     except getopt.GetoptError:
         PrintUsage('Invalid Arguments')
     filters = ""
@@ -574,6 +669,8 @@ def ParseArgs(argv):
                 PrintUsage('spaces expects an integer value')
         elif opt == '--quiet':
             _lint_state.quiet = True
+        elif opt == "--diff":
+            _lint_state.diff = True
         elif opt == '--linelength':
             try:
                 _lint_state.SetLineLength(val)
@@ -589,7 +686,7 @@ def ParseArgs(argv):
     except ValueError as ex:
         PrintUsage(str(ex))
 
-    if not filenames:
+    if not filenames and not _lint_state.diff:
         if os.path.isfile(_DEFAULT_FILENAME):
             filenames = [_DEFAULT_FILENAME]
         else:
@@ -598,7 +695,9 @@ def ParseArgs(argv):
 
 def main():
     files = ParseArgs(sys.argv[1:])
-
+    if(_lint_state.diff):
+        data = sys.stdin.read()
+        ProcessDiff(data)
     for filename in files:
         ProcessFile(filename)
     if _lint_state.errors > 0 or not _lint_state.quiet:

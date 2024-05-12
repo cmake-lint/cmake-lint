@@ -1,0 +1,40 @@
+diff --git a/samples/llvm/CMakeLists.txt b/samples/llvm/CMakeLists.txt
+index c3647ed..01960c3 100644
+--- a/samples/llvm/CMakeLists.txt
++++ b/samples/llvm/CMakeLists.txt
+@@ -45,7 +45,7 @@ project(LLVM
+   LANGUAGES C CXX ASM)
+ 
+ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+-  message(STATUS "No build type selected, default to Debug")
++  messagE(STATUS "No build type selected, default to Debug")
+   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
+ endif()
+ 
+@@ -57,7 +57,7 @@ set(LLVM_ALL_PROJECTS "clang;clang-tools-extra;compiler-rt;debuginfo-tests;libcl
+ set(LLVM_ENABLE_PROJECTS "" CACHE STRING
+ 	"Semicolon-separated list of projects to build (${LLVM_ALL_PROJECTS}), or \"all\".")
+ if( LLVM_ENABLE_PROJECTS STREQUAL "all" )
+-  set( LLVM_ENABLE_PROJECTS ${LLVM_ALL_PROJECTS})
++  set( LLVM_ENABLE_PROJECTS ${LLVM_ALL_PROJECTS}  )
+ endif()
+ 
+ # LLVM_ENABLE_PROJECTS_USED is `ON` if the user has ever used the
+@@ -78,7 +78,7 @@ set(LLVM_ENABLE_PROJECTS_USED OFF CACHE BOOL "")
+ mark_as_advanced(LLVM_ENABLE_PROJECTS_USED)
+ 
+ if (LLVM_ENABLE_PROJECTS_USED OR NOT LLVM_ENABLE_PROJECTS STREQUAL "")
+-  set(LLVM_ENABLE_PROJECTS_USED ON CACHE BOOL "" FORCE)
++    set(LLVM_ENABLE_PROJECTS_USED ON CACHE BOOL "" FORCE)
+   foreach(proj ${LLVM_ALL_PROJECTS} ${LLVM_EXTERNAL_PROJECTS})
+     string(TOUPPER "${proj}" upper_proj)
+     string(REGEX REPLACE "-" "_" upper_proj ${upper_proj})
+@@ -94,7 +94,7 @@ if (LLVM_ENABLE_PROJECTS_USED OR NOT LLVM_ENABLE_PROJECTS STREQUAL "")
+       message(STATUS "${proj} project is enabled")
+       set(SHOULD_ENABLE_PROJECT TRUE)
+     else()
+-      message(STATUS "${proj} project is disabled")
++      message(STATUS "${proj} project is disabled" ) 
+       set(SHOULD_ENABLE_PROJECT FALSE)
+     endif()
+     # Force `LLVM_TOOL_${upper_proj}_BUILD` variables to have values that
