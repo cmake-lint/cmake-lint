@@ -19,7 +19,7 @@ import unittest
 
 import cmakelint.__version__
 import cmakelint.main
-import mock
+from unittest import mock
 
 
 # stderr suppression from https://stackoverflow.com/a/1810086

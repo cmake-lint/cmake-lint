@@ -315,8 +315,13 @@ tags
 # Persistent undo
 [._]*.un~
 
+# ruff
+.ruff_cache
 
 
 *.pyc
 .tox
 *.orig
+
+# vscode
+.vscode/

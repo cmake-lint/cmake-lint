@@ -18,9 +18,6 @@ import os
 import getopt
 import cmakelint.__version__
 
-if sys.version_info < (3,):
-    # xrange slightly faster than range on python2
-    range = xrange
 
 _RE_COMMAND = re.compile(r'^\s*(\w+)(\s*)\(', re.VERBOSE)
 _RE_COMMAND_START_SPACES = re.compile(r'^\s*\w+\s*\((\s*)', re.VERBOSE)
@@ -471,7 +468,7 @@ def CheckLintPragma(filename, linenumber, line, errors=None):
         except ValueError as ex:
             if errors:
                 errors(filename, linenumber, 'syntax', str(ex))
-        except:
+        except Exception:
             print("Exception occurred while processing '{0}:{1}':"
                   .format(filename, linenumber))
 
@@ -483,13 +480,13 @@ def _ProcessFile(filename):
         return
     global _package_state
     _package_state = _CMakePackageState()
-    for l in open(filename).readlines():
-        l = l.rstrip('\n')
-        if l.endswith('\r'):
+    for line in open(filename).readlines():
+        line = line.rstrip('\n')
+        if line.endswith('\r'):
             have_cr = True
-            l = l.rstrip('\r')
-        lines.append(l)
-        CheckLintPragma(filename, len(lines) - 1, l)
+            line = line.rstrip('\r')
+        lines.append(line)
+        CheckLintPragma(filename, len(lines) - 1, line)
     lines.append('# Lines end here')
     # Check file name after reading lines incase of a # lint_cmake: pragma
     CheckFileName(filename, Error)
@@ -573,14 +570,14 @@ def ParseArgs(argv):
             try:
                 _lint_state.SetSpaces(val)
                 ignore_space = True
-            except:
+            except Exception:
                 PrintUsage('spaces expects an integer value')
         elif opt == '--quiet':
             _lint_state.quiet = True
         elif opt == '--linelength':
             try:
                 _lint_state.SetLineLength(val)
-            except:
+            except Exception:
                 PrintUsage('line length expects an integer value')
     try:
         if _lint_state.config:

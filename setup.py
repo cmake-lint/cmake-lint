@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import imp
+import importlib
 
 from setuptools import setup
 
@@ -8,10 +8,7 @@ from setuptools import setup
 def get_version():
     ver_file = None
     try:
-        ver_file, pathname, description = imp.find_module(
-            '__version__', ['cmakelint'])
-        vermod = imp.load_module(
-            '__version__', ver_file, pathname, description)
+        vermod = importlib.import_module('cmakelint.__version__')
         version = vermod.VERSION
         return version
     finally:
@@ -30,16 +27,13 @@ test_required = read_without_comments('test-requirements')
 setup(name='cmakelint',
       version=get_version(),
       packages=['cmakelint'],
-      scripts=['bin/cmakelint'],
       entry_points={
           'console_scripts': [
               'cmakelint = cmakelint.main:main'
           ]
       },
       install_requires=[],
-      setup_requires=[
-          "pytest-runner"
-      ],
+      setup_requires=[],
       tests_require=test_required,
       # extras_require allow pip install .[dev]
       extras_require={

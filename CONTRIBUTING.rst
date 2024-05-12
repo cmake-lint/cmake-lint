@@ -33,8 +33,8 @@ You can setup your local environment for developing patches for cmakelint like t
     pip install --user -e .[dev]
 
     # run tests
-    python setup.py test  # or pytest
-    python setup.py lint  # or coala
+    pytest
+    ruff check .
     ./tox    # the above in all python environments
 
 Releasing

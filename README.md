@@ -57,6 +57,17 @@ same effect:
     cmakelint.py CMakeLists.txt
     cmakelint.py --filter=-whitespace/indent CMakeLists.txt
 
+Filters can optionally be directly enabled/disabled from within a CMake file,
+overriding the configuration from file or CLI argument:
+
+```
+# lint_cmake: <+ or -><filter name>
+# e.g.:
+# lint_cmake: -readability/wonkycase
+# add multiple filters as list:
+# lint_cmake: <+/-><filter1>, <+/-><filter2>
+```
+
 cmakelint can also be run with [pre-commit](https://pre-commit.com). Add the following configuration block to your `.pre-commit-config.yaml`:
 
 ``` yaml
