@@ -72,6 +72,7 @@ cmakelint can also be run with [pre-commit](https://pre-commit.com). Add the fol
 
 ``` yaml
   - repo: https://github.com/cmake-lint/cmake-lint
+    rev: v1.4.1
     hooks:
       - id: cmakelint
 ```
