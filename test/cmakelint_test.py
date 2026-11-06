@@ -27,7 +27,7 @@ from unittest import mock
 def nostderr():
     savestderr = sys.stderr
 
-    class Devnull(object):
+    class Devnull:
         def write(self, _): pass
         def flush(self): pass
     sys.stderr = Devnull()
@@ -37,7 +37,7 @@ def nostderr():
         sys.stderr = savestderr
 
 
-class ErrorCollector(object):
+class ErrorCollector:
     def __init__(self):
         self._errors = []
 
