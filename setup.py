@@ -34,7 +34,6 @@ setup(name='cmakelint',
       },
       install_requires=[],
       setup_requires=[],
-      tests_require=test_required,
       # extras_require allow pip install .[dev]
       extras_require={
           'test': test_required,
@@ -50,10 +49,9 @@ setup(name='cmakelint',
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Programming Language :: Other",
-        "Programming Language :: Python",
-        "License :: OSI Approved :: Apache Software License"],
+        "Programming Language :: Python"],
       description="Static code checker for CMake files",
       long_description=open('README.md').read(),
       long_description_content_type="text/markdown",
-      license="Apache 2.0"
+      license="Apache-2.0"
       )
