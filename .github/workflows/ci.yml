@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         python-version:
-          ["3.11", "3.12", "3.13", "3.14", "3.15", "pypy-3.11"]
+          ["3.11", "3.12", "3.13", "3.14", "3.x", "pypy-3.11", "pypy-3.12"]
 
     steps:
       - name: Checkout
@@ -34,6 +34,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade setuptools
           python -m pip install -e .[dev]
-          python -m pip install tox tox-gh-actions
+          python -m pip install tox
       - name: Test with tox
-        run: tox
+        # "py" = the interpreter tox runs on, so "3.x" always tests the newest CPython
+        run: tox -e py
+      - name: Lint
+        if: matrix.python-version == '3.11'
+        run: tox -e lint
