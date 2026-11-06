@@ -11,7 +11,6 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 """
-from __future__ import print_function
 import sys
 import re
 import os
@@ -103,7 +102,7 @@ def DefaultRC():
 
 _DEFAULT_CMAKELINTRC = DefaultRC()
 
-class _CMakeLintState(object):
+class _CMakeLintState:
     def __init__(self):
         self.filters = []
         self.config = 0
@@ -130,7 +129,7 @@ class _CMakeLintState(object):
                     if c.startswith(f[1:]):
                         allowed = True
                 if not allowed:
-                    raise ValueError('Filter not allowed: %s'%f)
+                    raise ValueError(f'Filter not allowed: {f}')
             else:
                 raise ValueError('Filter should start with - or +')
 
@@ -143,7 +142,7 @@ class _CMakeLintState(object):
     def SetLineLength(self, linelength):
         self.linelength = int(linelength)
 
-class _CMakePackageState(object):
+class _CMakePackageState:
     def __init__(self):
         self.sets = []
         self.have_included_stdargs = False
@@ -231,7 +230,7 @@ def CleanComments(line, quote=False):
 
     return ''.join(prior).rstrip(), quote
 
-class CleansedLines(object):
+class CleansedLines:
     def __init__(self, lines):
         self.have_seen_uppercase = None
         self.raw_lines = lines
@@ -256,7 +255,7 @@ def ShouldPrintError(category):
 def Error(filename, linenumber, category, message):
     if ShouldPrintError(category):
         _lint_state.errors += 1
-        print('%s:%d: %s [%s]' % (filename, linenumber, message, category))
+        print(f'{filename}:{linenumber}: {message} [{category}]')
 
 def CheckLineLength(filename, linenumber, clean_lines, errors):
     """
@@ -268,8 +267,7 @@ def CheckLineLength(filename, linenumber, clean_lines, errors):
                 filename,
                 linenumber,
                 'linelength',
-                'Lines should be <= %d characters long' %
-                    (_lint_state.linelength))
+                f'Lines should be <= {_lint_state.linelength} characters long')
 
 def ContainsCommand(line):
     return _RE_COMMAND.match(line)
@@ -327,7 +325,7 @@ def CheckCommandSpaces(filename, linenumber, clean_lines, errors):
     match = ContainsCommand(line)
     if match and len(match.group(2)):
         errors(filename, linenumber, 'whitespace/extra',
-                "Extra spaces between '%s' and its ()"%(match.group(1)))
+                f"Extra spaces between '{match.group(1)}' and its ()")
     if match:
         spaces_after_open = len(_RE_COMMAND_START_SPACES.match(line).group(1))
         initial_spaces = GetInitialSpaces(line)
@@ -360,12 +358,12 @@ def CheckRepeatLogic(filename, linenumber, clean_lines, errors):
     """
     line = clean_lines.lines[linenumber]
     for cmd in _logic_commands:
-        if re.search(r'\b%s\b'%cmd, line.lower()):
+        if re.search(rf'\b{cmd}\b', line.lower()):
             m = _RE_LOGIC_CHECK.search(line)
             if m:
                 errors(filename, linenumber, 'readability/logic',
-                        'Expression repeated inside %s; '
-                        'better to use only %s()'%(cmd, m.group(1)))
+                        f'Expression repeated inside {cmd}; '
+                        f'better to use only {m.group(1)}()')
             break
 
 def CheckIndent(filename, linenumber, clean_lines, errors):
@@ -374,7 +372,7 @@ def CheckIndent(filename, linenumber, clean_lines, errors):
     remainder = initial_spaces % _lint_state.spaces
     if remainder != 0:
         errors(filename, linenumber, 'whitespace/indent',
-                'Weird indentation; use %d spaces'%(_lint_state.spaces))
+                f'Weird indentation; use {_lint_state.spaces} spaces')
 
 def CheckStyle(filename, linenumber, clean_lines, errors):
     """
@@ -469,8 +467,7 @@ def CheckLintPragma(filename, linenumber, line, errors=None):
             if errors:
                 errors(filename, linenumber, 'syntax', str(ex))
         except Exception:
-            print("Exception occurred while processing '{0}:{1}':"
-                  .format(filename, linenumber))
+            print(f"Exception occurred while processing '{filename}:{linenumber}':")
 
 def _ProcessFile(filename):
     lines = ['# Lines start at 1']
@@ -499,13 +496,13 @@ def _ProcessFile(filename):
     _package_state.Done(filename, Error)
 
 def PrintVersion():
-    sys.stderr.write("cmakelint %s\n" % cmakelint.__version__.VERSION)
+    sys.stderr.write(f"cmakelint {cmakelint.__version__.VERSION}\n")
     sys.exit(0)
 
 def PrintUsage(message):
     sys.stderr.write(_USAGE)
     if message:
-        sys.stderr.write('FATAL ERROR: %s\n' % message)
+        sys.stderr.write(f'FATAL ERROR: {message}\n')
     sys.exit(32)
 
 def PrintCategories():
@@ -535,13 +532,8 @@ def ParseOptionFile(contents, ignore_space):
         _lint_state.SetLineLength(linelength)
 
 
-# See https://stackoverflow.com/a/30299145 - fixes deprecation warning in py 3.4+
-if sys.version_info[0] == 2:
-    def OpenTextFile(filename):
-        return open(filename, 'rU')
-else:
-    def OpenTextFile(filename):
-        return open(filename, 'r', newline=None)
+def OpenTextFile(filename):
+    return open(filename, newline=None)
 
 def ParseArgs(argv):
     try:
@@ -583,7 +575,7 @@ def ParseArgs(argv):
         if _lint_state.config:
             try:
                 ParseOptionFile(OpenTextFile(_lint_state.config).readlines(), ignore_space)
-            except IOError:
+            except OSError:
                 pass
         _lint_state.SetFilters(filters)
     except ValueError as ex:
@@ -602,7 +594,7 @@ def main():
     for filename in files:
         ProcessFile(filename)
     if _lint_state.errors > 0 or not _lint_state.quiet:
-        sys.stderr.write("Total Errors: %d\n" % _lint_state.errors)
+        sys.stderr.write(f"Total Errors: {_lint_state.errors}\n")
     if _lint_state.errors > 0:
         return 1
     else:
